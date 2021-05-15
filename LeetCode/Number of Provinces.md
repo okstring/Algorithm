@@ -11,6 +11,7 @@ class Solution {
         let count = isConnected.count
         var find = Set<Int>()
         
+      // 해당 isConnected[i]를 다 돌아봐서 1이고 find에 없다면 추가하고 dfs
         func dfs(i: Int) {
             for (ci, cv) in isConnected[i].enumerated() where cv == 1 && !find.contains(ci) {
                 find.update(with: ci)
@@ -19,6 +20,7 @@ class Solution {
         }
         
         var result = 0
+      // 하나씩 살펴본다
         for i in 0..<count {
             if !find.contains(i) {
                 dfs(i: i)
@@ -76,6 +78,8 @@ class Solution(object):
 
 ##### BFS:
 
+Python
+
 ```python
 class Solution(object):
     def findCircleNum(self, M):
@@ -100,4 +104,42 @@ class Solution(object):
         
         return cnt
 ```
+
+
+
+swift
+
+```swift
+class Solution {
+    func findCircleNum(_ isConnected: [[Int]]) -> Int {
+        if isConnected.count == 1 { return 1 }
+        let count = isConnected.count
+        var find = Set<Int>()
+        var result = 0
+        
+      // 하나씩 본다
+        for i in 0..<count {
+            if !find.contains(i) {
+              //queue에 먼저 담아주고
+                var queue = [i]
+                while !queue.isEmpty {
+                  //하나 꺼내서 해당 isConnected[i]를 살펴본다
+                    let popQ = queue.removeFirst()
+                    if !find.contains(popQ) {
+                        find.update(with: popQ)
+                        
+                        for (ci, cv) in isConnected[popQ].enumerated() where cv == 1 && !find.contains(ci) {
+                            queue.append(ci)
+                        }
+                    }
+                }
+                result += 1
+            }
+        }
+        return result
+    }
+}
+```
+
+
 
