@@ -1,7 +1,5 @@
 ### Group Anagrams
 
-생각의 전환이 필요한 문제
-
 
 
 
@@ -9,15 +7,11 @@
 ```swift
 class Solution {
     func groupAnagrams(_ strs: [String]) -> [[String]] {
-        var result = Dictionary<String, [String]>()
-        
-        for str in strs {
-            result[String(str.sorted()), default: [String]()].append(str)
+        var dict = [String: [String]]()
+        strs.forEach { (str) in
+            dict[String(str.sorted()), default: [String]()].append(str)
         }
-        
-        return result.values.map { (arr) -> [String] in
-            return arr
-        }
+        return dict.values.compactMap({ $0 })
     }
 }
 ```
