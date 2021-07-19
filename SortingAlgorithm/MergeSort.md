@@ -1,8 +1,4 @@
-### Merge Sort, Recursive
-
-Recursive2 - Divide and Conquer
-
-Merge Sort를 연습해본다
+### Merge Sort
 
 
 
@@ -12,48 +8,48 @@ Merge Sort를 연습해본다
 
 - 정렬된 하위 목록을 병합하여 새 정렬된 목록을 생성(Combine)
 
-
-
 ```swift
-class Solution {
-    func sortArray(_ nums: [Int]) -> [Int] {
-        if nums.count <= 1 {
-            return nums
+import Foundation
+
+func merge(l: [Int], r: [Int]) -> [Int] {
+    var i = 0
+    var j = 0
+    var sorted = [Int]()
+    while i < l.count && j < r.count {
+        if l[i] < r[j] {
+            sorted.append(l[i])
+            i += 1
+        } else {
+            sorted.append(r[j])
+            j += 1
         }
-        
-        let index = nums.count / 2
-        
-        let left = sortArray(Array(nums[0..<index]))
-        let right = sortArray(Array(nums[index..<nums.count]))
-        
-        return merge(left, right)
     }
-    
-    func merge(_ left: [Int], _ right: [Int]) -> [Int] {
-        var leftIndex = 0
-        var rightIndex = 0
-        var result = [Int]()
-        
-        while leftIndex < left.count && rightIndex < right.count {
-            if left[leftIndex] > right[rightIndex] {
-                result.append(right[rightIndex])
-                rightIndex += 1
-            } else if left[leftIndex] < right[rightIndex] {
-                result.append(left[leftIndex])
-                leftIndex += 1
-            } else {
-                result.append(left[leftIndex])
-                result.append(right[rightIndex])
-                leftIndex += 1
-                rightIndex += 1
-            }
-        }
-        result.append(contentsOf: left[leftIndex..<left.count])
-        result.append(contentsOf: right[rightIndex..<right.count])
-        
-        return result
+    if i < l.count {
+        sorted.append(contentsOf: l[i...])
     }
+    if j < r.count {
+        sorted.append(contentsOf: r[j...])
+    }
+    return sorted
 }
+
+func mergeSort(arr: [Int]) -> [Int] {
+    if arr.count <= 1 {
+        return arr
+    }
+    let mid = arr.count / 2
+    let leftList = Array(arr[0..<mid])
+    let rightList = Array(arr[mid..<arr.count])
+    let left = mergeSort(arr: leftList)
+    let right = mergeSort(arr: rightList)
+    return merge(l: left, r: right)
+}
+
+print(mergeSort(arr: [3, 2, 4, 1, 2, 3, 5]))
 ```
 
-- `append(contentsOf:)` 를 이용하면 `+` 와 같이 Array를 이어붙일 수 있다
+
+
+- 병합 정렬의 핵심은 **divide and conquer**
+- **정렬이 된 array**들을 합치기 때문에 n의 시간복잡도가 든다
+
